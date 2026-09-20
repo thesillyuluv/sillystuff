@@ -3,11 +3,22 @@ import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
 
-const { FormSection, FormInput, FormText } = Forms;
-const { ScrollView } = ReactNative;
+console.log("[ClydeEditor] Settings module evaluated", {
+  Forms: typeof Forms,
+  formKeys: Forms ? Object.keys(Forms) : null,
+});
 
 export default function Settings() {
+  console.log("[ClydeEditor] Settings rendering");
   useProxy(storage);
+
+  const { FormSection, FormInput, FormText } = (Forms ?? {}) as any;
+  const { ScrollView } = ReactNative;
+  console.log("[ClydeEditor] components", {
+    FormSection: !!FormSection,
+    FormInput: !!FormInput,
+    FormText: !!FormText,
+  });
 
   return (
     <ScrollView>
