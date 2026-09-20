@@ -1,0 +1,14 @@
+{
+    "name": "Clyde Editor",
+    "description": "A tool to modify Clyde's name, and profile picture.",
+    "authors": [
+        {
+            "name": "thesillyuluv",
+            "id": "1445892845956235407"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_message_edit"
+    }
+}
