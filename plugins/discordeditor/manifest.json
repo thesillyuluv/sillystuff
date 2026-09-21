@@ -1,0 +1,14 @@
+{
+    "name": "Discord Editor",
+    "description": "A tool to modify the official Discord account.",
+    "authors": [
+        {
+            "name": "thesillyuluv",
+            "id": "1445892845956235407"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "RobotIcon"
+    }
+}
