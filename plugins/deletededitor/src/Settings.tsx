@@ -1,57 +1,34 @@
-import { findByStoreName, findByProps } from "@vendetta/metro";
-import { after } from "@vendetta/patcher";
+import { React, ReactNative } from "@vendetta/metro/common";
+import { useProxy } from "@vendetta/storage";
 import { storage } from "@vendetta/plugin";
-import { showToast } from "@vendetta/ui/toasts";
-import Settings from "./Settings";
+import { Forms } from "@vendetta/ui/components";
 
-console.log("[DeletedEditor] index evaluated", { settings: typeof Settings });
+console.log("[DeletedEditor] Settings module evaluated", {
+  Forms: typeof Forms,
+  formKeys: Forms ? Object.keys(Forms) : null,
+});
 
-const CLYDE_ID = "1";
-const UserStore = findByStoreName("UserStore");
-const AvatarUtils = findByProps("getUserAvatarSource");
-const patches: (() => void)[] = [];
+export default function Settings() {
+  console.log("[DeletedEditor] Settings rendering");
+  useProxy(storage);
 
-export default {
-  onLoad() {
-    try {
-      console.log("[ClydeEditor] onLoad", {
-        UserStore: !!UserStore,
-        AvatarUtils: !!AvatarUtils,
-        name: storage.name,
-        avatar: storage.avatar,
-      });
-      
-      storage.name ??= "";
-      storage.avatar ??= "";
+  const { FormSection, FormInput, FormText } = (Forms ?? {}) as any;
+  const { ScrollView } = ReactNative;
+  console.log("[DeletedEditor] components", {
+    FormSection: !!FormSection,
+    FormInput: !!FormInput,
+    FormText: !!FormText,
+  });
 
-      if (UserStore) {
-        patches.push(
-          after("getUser", UserStore, ([id]: string[], user: any) => {
-            if (id !== CLYDE_ID || !user || !storage.name) return;
-            console.log("[DeletedEditor] renaming Deleted to", storage.name);
-            user.username = storage.name;
-            user.globalName = storage.name;
-          })
-        );
-      }
-      if (AvatarUtils) {
-        patches.push(
-          after("getUserAvatarSource", AvatarUtils, ([user]: any[], res: any) => {
-            if (user?.id === CLYDE_ID && storage.avatar) {
-              console.log("[DeletedEditor] swapping Deleted avatar");
-              return { uri: storage.avatar };
-            }
-          })
-        );
-      }
-    } catch (e) {
-      console.log("[ClydeEditor] onLoad error", e);
-      showToast("Clyde Editor error, check logs");
-    }
-  },
-  onUnload() {
-    console.log("[ClydeEditor] onUnload");
-    patches.forEach((p) => p());
-  },
-  settings: Settings,
-};
+  return (
+    <ScrollView>
+      <FormSection title="Deleted User Editor" titleStyleType="no_border">
+        <FormInput title="Name" placeholder="Deleted" value={storage.name} onChange={(v: string) => (storage.name = v)} />
+        <FormInput title="Avatar" placeholder="https://example.com/avatar.png" value={storage.avatar} onChange={(v: string) => (storage.avatar = v)} />
+        <FormText style={{ margin: 16, opacity: 0.6 }}>
+          Leave a field empty to keep Deleted Users default names or avatars. You should reload after updating.
+        </FormText>
+      </FormSection>
+    </ScrollView>
+  );
+}
