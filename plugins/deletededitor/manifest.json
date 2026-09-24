@@ -1,1 +1,14 @@
-
+{
+    "name": "Deleted User Editor",
+    "description": "A tool to modify Deleted Users' names, and their profile picture.",
+    "authors": [
+        {
+            "name": "thesillyuluv",
+            "id": "1445892845956235407"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "RobotIcon"
+    }
+}
