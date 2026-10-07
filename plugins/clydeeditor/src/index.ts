@@ -20,8 +20,7 @@ export default {
         name: storage.name,
         avatar: storage.avatar,
       });
-      showToast("Clyde Editor loaded");
-
+      
       storage.name ??= "";
       storage.avatar ??= "";
 
